@@ -25,7 +25,7 @@ const ItemDetail = () => {
     const addOne = () => {
         if (counter < product.stock) {
             setCounter(counter + 1);
-        } else {
+        }else {
             alert("stock maximo");
         }
     };

@@ -5,9 +5,11 @@ export const AuthContext = createContext();
 
 const AuthContextComponent = ({ children }) => {
     const [user, setUser] = useState(
-        JSON.parse(localStorage.getItem("userInfo")) || {});
+        JSON.parse(localStorage.getItem("userInfo")) || {}
+    );
     const [isLogged, setIsLogged] = useState(
-        JSON.parse(localStorage.getItem("isLogged")) || false);
+        JSON.parse(localStorage.getItem("isLogged")) || false
+    );
 
     const handleLogin = (userLogged) => {
         setUser(userLogged);
