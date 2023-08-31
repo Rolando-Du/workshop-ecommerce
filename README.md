@@ -57,9 +57,9 @@ Si tienes problemas con el proyecto, puedes consultar la documentación de Merca
 
 Información de contacto
 
-###**Requisitos Previos**
+**Requisitos Previos**
 Node.js (preferiblemente versión 14 o superior) instalado en tu sistema.
-####**Instalación**
+**Instalación**
 Clona este repositorio en tu máquina local:
 bash
 Copy code
