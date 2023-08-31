@@ -1,9 +1,5 @@
 #**Proyecto Ecommerce con integracion de Mercado Pago - Documentación**
 
-
-![Screenshot of a comment on a GitHub issue showing an image, added in the Markdown, of an Octocat smiling and raising a tentacle.](https://www.google.com.ar/url?sa=i&url=https%3A%2F%2Fvendedores.mercadolibre.com.co%2Fnota%2F7-razones-para-vender-con-link-de-pago-de-mercado-pago%2F&psig=AOvVaw1wCkp8In3FARu3VxJzUHCE&ust=1693575289451000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCOiTyOGBh4EDFQAAAAAdAAAAABBG)
-
-
 ¡Bienvenido a la documentación de Prueba Ecommerce! En esta guía, encontrarás información detallada sobre el proyecto de comercio electrónico desarrollado con Vite y React.js, que incluye integración con Mercado Pago. La aplicación está deployada en Vercel para que puedas acceder y probarla en línea.
 
 ###**Descripción del Proyecto**
