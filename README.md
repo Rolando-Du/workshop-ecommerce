@@ -1,11 +1,11 @@
-#**Proyecto Ecommerce con integracion de Mercado Pago - Documentación**
+**Proyecto Ecommerce con integracion de Mercado Pago - Documentación**
 
 ¡Bienvenido a la documentación de Prueba Ecommerce! En esta guía, encontrarás información detallada sobre el proyecto de comercio electrónico desarrollado con Vite y React.js, que incluye integración con Mercado Pago. La aplicación está deployada en Vercel para que puedas acceder y probarla en línea.
 
-###**Descripción del Proyecto**
+**Descripción del Proyecto**
 Prueba Ecommerce es una aplicación de comercio electrónico diseñada para brindar a los usuarios una experiencia de compra en línea fluida y conveniente. La aplicación está construida utilizando la tecnología de Vite y React.js, lo que garantiza un rendimiento rápido y una interfaz de usuario moderna.
 
-###**Características Principales**
+**Características Principales**
 Explora una amplia gama de productos disponibles en la tienda.
 Agrega productos al carrito de compras y gestiona las cantidades.
 Proceso de pago seguro a través de la integración de Mercado Pago.
