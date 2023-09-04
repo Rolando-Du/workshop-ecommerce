@@ -47,10 +47,12 @@ const ProductsList = ({ products, setIsChange }) => {
 
     return (
         <div>
-            <Button variant="contained" onClick={() => handleOpen(null)}>
-                Agregar nuevo
-            </Button>
-            <TableContainer component={Paper}>
+            <Box display="flex" justifyContent="end" marginTop= "-2rem">
+                <Button variant="contained" onClick={() => handleOpen(null)}>
+                    Agregar nuevo
+                </Button>
+            </Box>
+            <TableContainer component={Paper} >
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>

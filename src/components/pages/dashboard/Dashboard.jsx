@@ -20,7 +20,7 @@ const Dashboard = () => {
     const [isChange, setIsChange] = useState(false);
     const [open, setOpen] = useState(false);
     const [shipmentCost, setShipmentCost] = useState(null);
-    
+
     const shipping_price = import.meta.env.VITE_SHIPPING_PRICE
 
     useEffect(() => {
@@ -49,9 +49,11 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Button variant="contained" onClick={() => setOpen(true)}>
-                Costo de envio
-            </Button>
+            <Box display="flex" justifyContent="start" marginTop= "2rem">
+                <Button variant="contained" onClick={() => setOpen(true)}>
+                    Costo de envio
+                </Button>
+            </Box>
             <Modal
                 open={open}
                 onClose={handleClose}

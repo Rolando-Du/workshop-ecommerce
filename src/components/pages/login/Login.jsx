@@ -20,6 +20,7 @@ import { db, loginGoogle, onSignIn } from "../../../firebaseConfig";
 import { collection, doc, getDoc } from "firebase/firestore"
 import { AuthContext } from "../../../context/AuthContext";
 
+import "./login.css"
 const Login = () => {
   const { handleLogin } = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false);
@@ -44,12 +45,12 @@ const Login = () => {
         const userCollection = collection(db, "users")
         const userRef = doc(userCollection, res.user.uid)
         const userDoc = await getDoc(userRef)
-        
+
         let finalyUser = {
           email: res.user.email,
           rol: userDoc.data().rol
         }
-        
+
         console.log(finalyUser);
         handleLogin(finalyUser)
         navigate("/")
@@ -130,66 +131,69 @@ const Login = () => {
           >
             ¿Olvidaste tu contraseña?
           </Link>
-          <Grid container justifyContent="center" spacing={3} mt={2}>
-            <Grid item xs={10} md={5}>
+          <Grid item xs={10} md={12}>
+            <Button
+              variant="contained"
+              fullWidth
+              type="submit"
+              sx={{
+                color: "white",
+                textTransform: "none",
+                textShadow: "2px 2px 2px grey",
+                marginBottom: "10px", // Espacio entre botones en todos los tamaños
+              }}
+            >
+              Ingresar
+            </Button>
+          </Grid>
+          <Grid item xs={10} md={12}>
+            <Tooltip title="ingresa con google">
               <Button
+                className="google-button"
                 variant="contained"
+                startIcon={<GoogleIcon />}
+                onClick={googleSingIn}
+                type="button"
                 fullWidth
-                type="submit"
                 sx={{
                   color: "white",
                   textTransform: "none",
                   textShadow: "2px 2px 2px grey",
+                  marginBottom: "10px", // Espacio entre botones en todos los tamaños
                 }}
               >
-                Ingresar
+                Ingresa con google
               </Button>
-            </Grid>
-            <Grid item xs={10} md={5}>
-              <Tooltip title="ingresa con google">
-                <Button
-                  variant="contained"
-                  startIcon={<GoogleIcon />}
-                  onClick={googleSingIn}
-                  type="button"
-                  fullWidth
-                  sx={{
-                    color: "white",
-                    textTransform: "none",
-                    textShadow: "2px 2px 2px grey",
-                  }}
-                >
-                  Ingresa con google
-                </Button>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={10} md={8}>
-              <Typography
-                color={"secondary.primary"}
-                variant={"h6"}
-                mt={1}
-                align="center"
+            </Tooltip>
+          </Grid>
+          <Grid item xs={10} md={12}>
+            <Typography
+              className="message"
+              color={"secondary.primary"}
+              variant={"h6"}
+              mt={1}
+              align="center"
+            >
+              ¿Aun no tienes cuenta?
+            </Typography>
+          </Grid>
+          <Grid item xs={10} md={12}>
+            <Tooltip title="ingresa con google">
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => navigate("/register")}
+                type="button"
+                sx={{
+                  color: "white",
+                  textTransform: "none",
+                  textShadow: "2px 2px 2px grey",
+                  marginBottom: "10px", // Espacio entre botones en todos los tamaños
+                }}
               >
-                ¿Aun no tienes cuenta?
-              </Typography>
-            </Grid>
-            <Grid item xs={10} md={5}>
-              <Tooltip title="ingresa con google">
-                <Button
-                  variant="contained"
-                  fullWidth
-                  onClick={() => navigate("/register")}
-                  type="button"
-                  sx={{
-                    color: "white",
-                    textTransform: "none",
-                    textShadow: "2px 2px 2px grey",
-                  }}
-                >
-                  Registrate
-                </Button>
-              </Tooltip>
-            </Grid>
+                Registrate
+              </Button>
+            </Tooltip>
           </Grid>
         </Grid>
       </form>
