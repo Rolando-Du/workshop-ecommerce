@@ -5,6 +5,7 @@ import Login from "../components/pages/login/Login";
 import Register from "../components/pages/register/Register";
 import ForgotPassword from "../components/pages/forgotPassword/ForgotPassword";
 import Dashboard from "../components/pages/dashboard/Dashboard";
+import ItemListContainer from "../components/pages/itemList/ItemListContainer";
 import ProtectedAdmin from "./ProtectedAdmin";
 import ProtectedUsers from "./ProtectedUsers";
 
@@ -32,6 +33,9 @@ const AppRouter = () => {
 
       {/* register  */}
       <Route path="/register" element={<Register />} />
+
+      {/* shop  */}
+      <Route path="/itemListContainer" element={<ItemListContainer />} />
 
       {/* forgot password  */}
       <Route path="/forgot-password" element={<ForgotPassword />} />

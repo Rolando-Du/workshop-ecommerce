@@ -3,6 +3,7 @@ import { db } from "../../../firebaseConfig";
 import { collection, getDocs, updateDoc, doc, } from "firebase/firestore";
 import ProductsList from "./ProductsList";
 import { Box, Button, Modal, TextField } from "@mui/material";
+
 const style = {
     position: "absolute",
     top: "50%",
@@ -20,7 +21,7 @@ const Dashboard = () => {
     const [isChange, setIsChange] = useState(false);
     const [open, setOpen] = useState(false);
     const [shipmentCost, setShipmentCost] = useState(null);
-
+    
     const shipping_price = import.meta.env.VITE_SHIPPING_PRICE
 
     useEffect(() => {
@@ -49,11 +50,9 @@ const Dashboard = () => {
 
     return (
         <div>
-            <Box display="flex" justifyContent="start" marginTop= "2rem">
-                <Button variant="contained" onClick={() => setOpen(true)}>
-                    Costo de envio
-                </Button>
-            </Box>
+            <Button className="btn1" variant="contained" onClick={() => setOpen(true)}>
+                Costo de envio
+            </Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -65,7 +64,7 @@ const Dashboard = () => {
                         label="Costo"
                         onChange={(e) => setShipmentCost(+e.target.value)}
                     />
-                    <Button onClick={updateShipment}>Modificar</Button>
+                    <Button className="btn2" onClick={updateShipment}>Modificar</Button>
                 </Box>
             </Modal>
             <ProductsList products={products} setIsChange={setIsChange} />

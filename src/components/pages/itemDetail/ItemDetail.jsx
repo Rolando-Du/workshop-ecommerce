@@ -5,6 +5,7 @@ import { getDoc, collection, doc } from "firebase/firestore";
 import { Button } from "@mui/material";
 import { CartContext } from "../../../context/CartContext";
 
+import './ItemDetail.css'
 const ItemDetail = () => {
     const { id } = useParams();
     const { addToCart, getQuantityById } = useContext(CartContext);
@@ -25,7 +26,7 @@ const ItemDetail = () => {
     const addOne = () => {
         if (counter < product.stock) {
             setCounter(counter + 1);
-        }else {
+        } else {
             alert("stock maximo");
         }
     };
@@ -50,31 +51,39 @@ const ItemDetail = () => {
     };
 
     return (
-        <div>
-            <h1>detalle</h1>
 
-            {product && (
-                <div>
-                    <h2>{product.title}</h2>
-                    <img src={product.image} style={{ width: "200px" }} alt="" />
+        <div className="centered-container">
+            <div className="container-cart">
+                <h2 className='text-center'>Detalles de los productos</h2>
+                <div className="row1">
+                    {product && (
+                        <div className="card-container">
+                            <h4 className='product-title'>{product.title}</h4>
+                            <img src={product.image} className="image" alt="" />
+                            <h3 className='product-description'>{product.description}</h3>
+                        </div>
+                    )}
+                    {
+                        quantity && <h6>Ya tienes {quantity} en el carrito</h6>
+                    }
+                    {
+                        product?.stock === quantity && <h6>Ya tienes el maximo en el carrito</h6>
+                    }
+                    <div className='botons'>
+                        <Button variant="contained" onClick={subOne}>
+                            -
+                        </Button>
+
+                        <span className='counter'> {counter} </span>
+
+                        <Button variant="contained" onClick={addOne}>
+                            +
+                        </Button>
+
+                    </div>
+                    <Button onClick={onAdd}><span className="addCar">Agregar al carrito</span> </Button>
                 </div>
-            )}
-            {
-                quantity && <h6>Ya tienes {quantity} en el carrito</h6>
-            }
-            {
-                product?.stock === quantity && <h6>Ya tienes el maximo en el carrito</h6>
-            }
-            <div style={{ display: "flex" }}>
-                <Button variant="contained" onClick={addOne}>
-                    +
-                </Button>
-                <h4>{counter}</h4>
-                <Button variant="contained" onClick={subOne}>
-                    -
-                </Button>
             </div>
-            <Button onClick={onAdd}>Agregar al carrito</Button>
         </div>
     );
 };
