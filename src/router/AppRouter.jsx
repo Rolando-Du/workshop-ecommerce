@@ -9,6 +9,7 @@ import ItemListContainer from "../components/pages/itemList/ItemListContainer";
 import ProtectedAdmin from "./ProtectedAdmin";
 import ProtectedUsers from "./ProtectedUsers";
 
+
 const AppRouter = () => {
   return (
     <Routes>
@@ -35,7 +36,7 @@ const AppRouter = () => {
       <Route path="/register" element={<Register />} />
 
       {/* shop  */}
-      <Route path="/itemListContainer" element={<ItemListContainer />} />
+      <Route path="/ItemListContainer" element={<ItemListContainer />} />
 
       {/* forgot password  */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
