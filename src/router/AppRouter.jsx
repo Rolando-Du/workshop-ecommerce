@@ -5,7 +5,7 @@ import Login from "../components/pages/login/Login";
 import Register from "../components/pages/register/Register";
 import ForgotPassword from "../components/pages/forgotPassword/ForgotPassword";
 import Dashboard from "../components/pages/dashboard/Dashboard";
-import ItemListContainer from "../components/pages/itemList/ItemListContainer";
+import ItemListContainer from "../components/pages/itemlist/ItemListContainer.jsx";
 import ProtectedAdmin from "./ProtectedAdmin";
 import ProtectedUsers from "./ProtectedUsers";
 
