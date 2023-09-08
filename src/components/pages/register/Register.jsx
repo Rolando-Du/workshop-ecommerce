@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -11,10 +11,11 @@ import {
   TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp, db } from "../../../firebaseConfig";
 import { setDoc, doc } from "firebase/firestore";
+import CircularProgress from "@mui/material/CircularProgress";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -72,6 +74,7 @@ const Register = () => {
     }
 
     try {
+      setLoading(true);
       const res = await signUp(userCredentials);
       if (res.user.uid) {
         await setDoc(doc(db, "users", res.user.uid), { rol: "user" });
@@ -94,6 +97,8 @@ const Register = () => {
         icon: "error",
         confirmButtonText: "Entendido",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,8 +122,22 @@ const Register = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
+        backdropFilter: loading ? "blur(5px)" : "none",
+        transition: "backdrop-filter 0.3s ease-in-out",
       }}
     >
+      {loading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <CircularProgress color="primary" />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <Grid
           container
@@ -132,6 +151,7 @@ const Register = () => {
               label="Email"
               fullWidth
               onChange={handleChange}
+              disabled={loading}
             />
           </Grid>
           <Grid item xs={10} md={12}>
@@ -160,6 +180,7 @@ const Register = () => {
                   </InputAdornment>
                 }
                 label="Contraseña"
+                disabled={loading}
               />
             </FormControl>
           </Grid>
@@ -189,6 +210,7 @@ const Register = () => {
                   </InputAdornment>
                 }
                 label="Confirmar contraseña"
+                disabled={loading}
               />
             </FormControl>
           </Grid>
@@ -203,6 +225,7 @@ const Register = () => {
                   textTransform: "none",
                   textShadow: "2px 2px 2px grey",
                 }}
+                disabled={loading}
               >
                 Registrarme
               </Button>
@@ -213,6 +236,7 @@ const Register = () => {
                 fullWidth
                 onClick={() => navigate("/login")}
                 type="button"
+                disabled={loading}
               >
                 Regresar
               </Button>

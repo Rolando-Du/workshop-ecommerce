@@ -10,7 +10,6 @@ import ProtectedAdmin from "./ProtectedAdmin";
 import ProtectedUsers from "./ProtectedUsers";
 import NotFound from "../components/NotFound/NotFound";
 
-
 const AppRouter = () => {
   return (
     <Routes>
@@ -30,18 +29,21 @@ const AppRouter = () => {
         </Route>
       </Route>
 
+
+      
       {/* Login */}
       <Route path="/login" element={<Login />} />
 
-      {/* register  */}
+      {/* register */}
       <Route path="/register" element={<Register />} />
 
-      {/* shop  */}
+      {/* shop */}
       <Route path="/shop" element={<ItemListContainer />} />
 
-      {/* forgot password  */}
+      {/* forgot password */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
+      {/* Página 404 (Not Found) */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

@@ -63,15 +63,23 @@ export const loginGoogle = async () => {
 // registro
 
 export const signUp = async ({ email, password }) => {
-    let res = await createUserWithEmailAndPassword(auth, email, password)
-    return res
+    try {
+        let res = await createUserWithEmailAndPassword(auth, email, password)
+        return res
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 // olvide la contraseña
 
 export const forgotPassword = async (email) => {
-    let res = await sendPasswordResetEmail(auth, email)
-    return res
+    try {
+        let res = await sendPasswordResetEmail(auth, email)
+        return res
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 // storage

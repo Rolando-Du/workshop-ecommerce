@@ -17,7 +17,6 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { menuItems } from "../../../router/navigation";
-import { logout } from "../../../firebaseConfig";
 import { AuthContext } from "../../../context/AuthContext";
 
 const drawerWidth = 200;
@@ -29,6 +28,7 @@ function Navbar(props) {
 
   const navigate = useNavigate();
   const rolAdmin = import.meta.env.VITE_ROL_ADMIN;
+  const { logoutContext } = useContext(AuthContext); // Obtener la función de cierre de sesión desde el contexto
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -36,12 +36,12 @@ function Navbar(props) {
 
   const handlePageChange = (page) => {
     setMobileOpen(false);
-    navigate(page); // Navega a la página seleccionada
+    navigate(page);
   };
 
   const handleLogout = () => {
-    logout(); // Función logout para cerrar sesión
-    navigate("/login"); // Navegar a la página de inicio de sesión
+    logoutContext(); // Usar la función de cierre de sesión desde el contexto
+    navigate("/login"); // Redirigir al usuario a la página de inicio de sesión
   };
 
   const drawer = (

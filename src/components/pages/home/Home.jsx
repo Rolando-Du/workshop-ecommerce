@@ -27,6 +27,7 @@ const Home = () => {
   };
 
   return (
+    
     <div className='container'>
       <h1 className="text-center">Los mejores productos</h1>
       <div className="container-cart">
