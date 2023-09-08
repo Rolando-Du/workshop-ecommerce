@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import NotFoundImage from "../../../public/assets/images/NotFoundImage.png";
 
 const NotFound = () => {
     const containerStyle = {
@@ -65,7 +66,7 @@ const NotFound = () => {
         <div style={containerStyle}>
             <h1 style={titleStyle}>{typedText}</h1>
             <img
-                src="../../../public/assets/images/notFound.png"
+                src={NotFoundImage} 
                 alt="NotFound"
                 style={imageStyle}
             />
