@@ -1,18 +1,22 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Button, IconButton } from "@mui/material";
+import Swal from 'sweetalert2'; // Importa SweetAlert2
+import { useState } from "react";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    IconButton,
+    Box,
+    Modal,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { db } from "../../../firebaseConfig";
-import { deleteDoc, doc } from "firebase/firestore";
-import { useState } from "react";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import ProductsForm from "./ProductsForm";
 
 const style = {
@@ -25,6 +29,7 @@ const style = {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
+    zIndex: 9999, // Establece un z-index alto para que esté en la parte superior
 };
 
 const ProductsList = ({ products, setIsChange }) => {
@@ -32,8 +37,29 @@ const ProductsList = ({ products, setIsChange }) => {
     const [productSelected, setProductSelected] = useState(null);
 
     const deleteProduct = (id) => {
-        deleteDoc(doc(db, "products", id));
-        setIsChange(true);
+        // Muestra un popup de confirmación antes de eliminar el producto
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Esta acción eliminará el producto de forma permanente.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, eliminar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, elimina el producto
+                deleteDoc(doc(db, "products", id));
+                setIsChange(true);
+
+                // Muestra un popup de éxito después de eliminar
+                Swal.fire({
+                    title: "Producto eliminado",
+                    text: "El producto ha sido eliminado con éxito.",
+                    icon: "success",
+                    confirmButtonText: "Continuar",
+                });
+            }
+        });
     };
 
     const handleClose = () => {
@@ -45,14 +71,51 @@ const ProductsList = ({ products, setIsChange }) => {
         setOpen(true);
     };
 
+    const handleUpdate = (updatedProduct) => {
+        // Muestra un popup de confirmación antes de actualizar el producto
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "Esta acción modificará el producto.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, modificar",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, actualiza el producto
+                const productsCollection = doc(db, "products", updatedProduct.id);
+                const updatedData = {
+                    title: updatedProduct.title,
+                    description: updatedProduct.description,
+                    unit_price: updatedProduct.unit_price,
+                    stock: updatedProduct.stock,
+                    category: updatedProduct.category,
+                };
+
+                updateDoc(productsCollection, updatedData).then(() => {
+                    setIsChange(true);
+                    handleClose();
+
+                    // Muestra un popup de éxito después de actualizar
+                    Swal.fire({
+                        title: "Producto actualizado",
+                        text: "El producto ha sido actualizado con éxito.",
+                        icon: "success",
+                        confirmButtonText: "Continuar",
+                    });
+                });
+            }
+        });
+    };
+
     return (
         <div>
-            <Box display="flex" justifyContent="end" marginTop= "-2rem">
+            <Box display="flex" justifyContent="end" marginTop="-2rem">
                 <Button variant="contained" onClick={() => handleOpen(null)}>
                     Agregar nuevo
                 </Button>
             </Box>
-            <TableContainer component={Paper} >
+            <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -119,6 +182,7 @@ const ProductsList = ({ products, setIsChange }) => {
                         setIsChange={setIsChange}
                         productSelected={productSelected}
                         setProductSelected={setProductSelected}
+                        handleUpdate={handleUpdate} // Pasa la función handleUpdate al formulario
                     />
                 </Box>
             </Modal>

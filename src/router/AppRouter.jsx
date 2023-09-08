@@ -8,6 +8,7 @@ import Dashboard from "../components/pages/dashboard/Dashboard";
 import ItemListContainer from "../components/pages/itemlist/ItemListContainer.jsx";
 import ProtectedAdmin from "./ProtectedAdmin";
 import ProtectedUsers from "./ProtectedUsers";
+import NotFound from "../components/NotFound/NotFound";
 
 
 const AppRouter = () => {
@@ -41,7 +42,7 @@ const AppRouter = () => {
       {/* forgot password  */}
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-      <Route path="*" element={<h1>Not found</h1>} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

@@ -1,3 +1,4 @@
+import Swal from "sweetalert2";
 import {
   Box,
   Button,
@@ -9,12 +10,11 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signUp, db } from "../../../firebaseConfig";
-import { setDoc, doc } from "firebase/firestore"
+import { setDoc, doc } from "firebase/firestore";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -22,23 +22,91 @@ const Register = () => {
   const [userCredentials, setUserCredentials] = useState({
     email: "",
     password: "",
-    confirmPassword: ""
-  })
+    confirmPassword: "",
+  });
 
-  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleChange = (e) => {
-    setUserCredentials({ ...userCredentials, [e.target.name]: e.target.value })
+    setUserCredentials({
+      ...userCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  }
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    let res = await signUp(userCredentials)
-    if (res.user.uid) {
-      await setDoc(doc(db, "users", res.user.uid), { rol: "user" })
+    e.preventDefault();
+
+    // Validaciones
+    if (!isValidEmail(userCredentials.email)) {
+      Swal.fire({
+        title: "Error de registro",
+        text: "Por favor, ingresa un correo electrónico válido.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
+      return;
     }
-    navigate("/login")
-  }
+
+    if (!isValidPassword(userCredentials.password)) {
+      Swal.fire({
+        title: "Error de registro",
+        text:
+          "La contraseña debe tener al menos 8 caracteres y contener al menos una letra mayúscula.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
+      return;
+    }
+
+    if (userCredentials.password !== userCredentials.confirmPassword) {
+      Swal.fire({
+        title: "Error de registro",
+        text: "Las contraseñas no coinciden.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
+      return;
+    }
+
+    try {
+      const res = await signUp(userCredentials);
+      if (res.user.uid) {
+        await setDoc(doc(db, "users", res.user.uid), { rol: "user" });
+      }
+      navigate("/login");
+
+      // Mostrar un popup de éxito con SweetAlert2
+      Swal.fire({
+        title: "Registro exitoso",
+        text: "Ahora puedes iniciar sesión con tu nueva cuenta",
+        icon: "success",
+        confirmButtonText: "Iniciar sesión",
+      });
+    } catch (error) {
+      console.log("Error de registro:", error);
+      // Mostrar un popup de error utilizando SweetAlert2
+      Swal.fire({
+        title: "Error de registro",
+        text: "Ocurrió un error durante el registro. Inténtalo nuevamente.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
+    }
+  };
+
+  const isValidEmail = (email) => {
+    // Utiliza una expresión regular para validar el formato del correo electrónico
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
+
+  const isValidPassword = (password) => {
+    // Verifica que la contraseña tenga al menos 8 caracteres y contenga al menos una letra mayúscula
+    return password.length >= 8 && /[A-Z]/.test(password);
+  };
 
   return (
     <Box
@@ -49,7 +117,6 @@ const Register = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        // backgroundColor: theme.palette.secondary.main,
       }}
     >
       <form onSubmit={handleSubmit}>
@@ -60,7 +127,12 @@ const Register = () => {
           justifyContent={"center"}
         >
           <Grid item xs={10} md={12}>
-            <TextField name="email" label="Email" fullWidth onChange={handleChange} />
+            <TextField
+              name="email"
+              label="Email"
+              fullWidth
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item xs={10} md={12}>
             <FormControl variant="outlined" fullWidth>

@@ -1,86 +1,79 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import "./Navbar.css";
 import { useContext, useState } from "react";
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { menuItems } from "../../../router/navigation";
 import { logout } from "../../../firebaseConfig";
 import { AuthContext } from "../../../context/AuthContext";
-import DashboardIcon from '@mui/icons-material/Dashboard';
+
 const drawerWidth = 200;
 
 function Navbar(props) {
-  const { logoutContext, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const navigate = useNavigate();
-  const rolAdmin = import.meta.env.VITE_ROL_ADMIN
+  const rolAdmin = import.meta.env.VITE_ROL_ADMIN;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handlePageChange = (page) => {
+    setMobileOpen(false);
+    navigate(page); // Navega a la página seleccionada
+  };
+
   const handleLogout = () => {
-    logout();
-    logoutContext();
-    navigate("/login");
+    logout(); // Función logout para cerrar sesión
+    navigate("/login"); // Navegar a la página de inicio de sesión
   };
 
   const drawer = (
     <div>
       <Toolbar />
-
       <List>
-        {menuItems.map(({ id, path, title, Icon }) => {
-          return (
-            <Link key={id} to={path}>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Icon sx={{ color: "whitesmoke" }} />
-                  </ListItemIcon>
-                  <ListItemText primary={title} sx={{ color: "whitesmoke" }} />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-          );
-        })}
-
-        {
-          user.rol === rolAdmin &&
-          <Link to={"/dashboard"}>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <DashboardIcon sx={{ color: "whitesmoke" }} />
-                </ListItemIcon>
-                <ListItemText primary={"Dashboard"} sx={{ color: "whitesmoke" }} />
-              </ListItemButton>
-            </ListItem>
-          </Link>
-
-        }
+        {menuItems.map(({ id, path, title, Icon }) => (
+          <ListItem disablePadding key={id}>
+            <ListItemButton onClick={() => handlePageChange(path)}>
+              <ListItemIcon>
+                <Icon sx={{ color: "whitesmoke" }} />
+              </ListItemIcon>
+              <ListItemText primary={title} sx={{ color: "whitesmoke" }} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        {user.rol === rolAdmin && (
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => handlePageChange("/dashboard")}>
+              <ListItemIcon>
+                <DashboardIcon sx={{ color: "whitesmoke" }} />
+              </ListItemIcon>
+              <ListItemText primary={"Dashboard"} sx={{ color: "whitesmoke" }} />
+            </ListItemButton>
+          </ListItem>
+        )}
         <ListItem disablePadding>
           <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon sx={{ color: "whitesmoke" }} />
             </ListItemIcon>
-            <ListItemText
-              primary={"Cerrar sesion"}
-              sx={{ color: "whitesmoke" }}
-            />
+            <ListItemText primary={"Cerrar sesión"} sx={{ color: "whitesmoke" }} />
           </ListItemButton>
         </ListItem>
       </List>
@@ -93,17 +86,10 @@ function Navbar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: "100%",
-        }}
-      >
-        <Toolbar
-          sx={{ gap: "20px", display: "flex", justifyContent: "space-between" }}
-        >
+      <AppBar position="fixed" sx={{ width: "100%" }}>
+        <Toolbar sx={{ gap: "20px", display: "flex", justifyContent: "space-between" }}>
           <Link to="/" style={{ color: "whitesmoke" }}>
-            Bazar-deco
+            Bazar y decoración
           </Link>
           <IconButton
             color="secondary.primary"
@@ -148,7 +134,6 @@ function Navbar(props) {
         }}
       >
         <Toolbar />
-
         <Outlet />
       </Box>
     </Box>

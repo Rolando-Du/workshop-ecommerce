@@ -2,12 +2,31 @@ import { useContext } from "react";
 import { CartContext } from "../../../context/CartContext";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
+import Swal from 'sweetalert2';
 
-import './Cart.css'
+import './Cart.css';
+
 const Cart = () => {
     const { cart, clearCart, deleteById, getTotalPrice } = useContext(CartContext);
 
-    let total = getTotalPrice()
+    let total = getTotalPrice();
+
+    // Función para eliminar un producto con confirmación
+    const confirmDelete = (productId) => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará el producto del carrito.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteById(productId);
+                Swal.fire('Eliminado', 'El producto ha sido eliminado del carrito.', 'success');
+            }
+        });
+    };
 
     return (
         <div className='container'>
@@ -22,7 +41,7 @@ const Cart = () => {
                                 <img src={product.image} className="image" alt="" />
                                 <h6 style={{ color: "green", margin: "8px" }}>Cantidad: {product.quantity}</h6>
                                 <div className='botons1'>
-                                    <Button onClick={() => deleteById(product.id)}><span className="delete">Eliminar</span> </Button>
+                                    <Button onClick={() => confirmDelete(product.id)}><span className="delete">Eliminar</span> </Button>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import {
   Box,
   Button,
@@ -17,12 +18,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useContext, useState } from "react";
 import { db, loginGoogle, onSignIn } from "../../../firebaseConfig";
-import { collection, doc, getDoc } from "firebase/firestore"
+import { collection, doc, getDoc } from "firebase/firestore";
 import { AuthContext } from "../../../context/AuthContext";
 
-import "./login.css"
+import "./login.css";
+
 const Login = () => {
-  const { handleLogin } = useContext(AuthContext)
+  const { handleLogin } = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -42,33 +44,65 @@ const Login = () => {
     try {
       const res = await onSignIn(userCredentials);
       if (res?.user) {
-        const userCollection = collection(db, "users")
-        const userRef = doc(userCollection, res.user.uid)
-        const userDoc = await getDoc(userRef)
+        const userCollection = collection(db, "users");
+        const userRef = doc(userCollection, res.user.uid);
+        const userDoc = await getDoc(userRef);
 
-        let finalyUser = {
+        let finalUser = {
           email: res.user.email,
-          rol: userDoc.data().rol
-        }
+          rol: userDoc.data().rol,
+        };
 
-        console.log(finalyUser);
-        handleLogin(finalyUser)
-        navigate("/")
+        console.log(finalUser);
+        handleLogin(finalUser);
+        navigate("/");
+        
+        Swal.fire({
+          title: "Inicio de sesión exitoso",
+          text: "Bienvenido de nuevo",
+          icon: "success",
+          confirmButtonText: "Continuar",
+        });
+      } else {
+        throw new Error("Error de inicio de sesión");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error de inicio de sesión:", error);
+      // Mostrar una alerta de error utilizando SweetAlert2
+      Swal.fire({
+        title: "Error de inicio de sesión",
+        text: "Ocurrió un error durante el inicio de sesión. Verifica tus credenciales e inténtalo nuevamente.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
     }
   };
 
-  const googleSingIn = async () => {
-    let res = await loginGoogle()
-    let finalyUser = {
-      email: res.user.email,
-      rol: "user"
+  const googleSignIn = async () => {
+    try {
+      let res = await loginGoogle();
+      let finalUser = {
+        email: res.user.email,
+        rol: "user",
+      };
+      handleLogin(finalUser);
+      navigate("/");
+      Swal.fire({
+        title: "Inicio de sesión con Google exitoso",
+        text: "Bienvenido de nuevo",
+        icon: "success",
+        confirmButtonText: "Continuar",
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        title: "Error de inicio de sesión con Google",
+        text: "Ocurrió un error durante el inicio de sesión con Google. Inténtalo nuevamente.",
+        icon: "error",
+        confirmButtonText: "Entendido",
+      });
     }
-    handleLogin(finalyUser)
-    navigate("/")
-  }
+  };
 
   return (
     <Box
@@ -85,7 +119,6 @@ const Login = () => {
         <Grid
           container
           rowSpacing={2}
-          // alignItems="center"
           justifyContent={"center"}
         >
           <Grid item xs={10} md={12}>
@@ -140,29 +173,29 @@ const Login = () => {
                 color: "white",
                 textTransform: "none",
                 textShadow: "2px 2px 2px grey",
-                marginBottom: "10px", // Espacio entre botones en todos los tamaños
+                marginBottom: "10px",
               }}
             >
               Ingresar
             </Button>
           </Grid>
           <Grid item xs={10} md={12}>
-            <Tooltip title="ingresa con google">
+            <Tooltip title="Ingresa con Google">
               <Button
                 className="google-button"
                 variant="contained"
                 startIcon={<GoogleIcon />}
-                onClick={googleSingIn}
+                onClick={googleSignIn}
                 type="button"
                 fullWidth
                 sx={{
                   color: "white",
                   textTransform: "none",
                   textShadow: "2px 2px 2px grey",
-                  marginBottom: "10px", // Espacio entre botones en todos los tamaños
+                  marginBottom: "10px",
                 }}
               >
-                Ingresa con google
+                Ingresar con Google
               </Button>
             </Tooltip>
           </Grid>
@@ -178,7 +211,7 @@ const Login = () => {
             </Typography>
           </Grid>
           <Grid item xs={10} md={12}>
-            <Tooltip title="ingresa con google">
+            <Tooltip title="Regístrate">
               <Button
                 variant="contained"
                 fullWidth
@@ -188,10 +221,10 @@ const Login = () => {
                   color: "white",
                   textTransform: "none",
                   textShadow: "2px 2px 2px grey",
-                  marginBottom: "10px", // Espacio entre botones en todos los tamaños
+                  marginBottom: "10px",
                 }}
               >
-                Registrate
+                Regístrate
               </Button>
             </Tooltip>
           </Grid>

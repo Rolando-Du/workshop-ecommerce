@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2'; 
 import { Button, TextField } from "@mui/material";
 import { useState } from "react";
 import { db, uploadFile } from "../../../firebaseConfig";
@@ -19,7 +20,7 @@ const ProductsForm = ({
         image: "",
     });
     const [file, setFile] = useState(null);
-    
+
     const handleImage = async () => {
         setIsLoading(true);
         let url = await uploadFile(file);
@@ -31,6 +32,16 @@ const ProductsForm = ({
         }
 
         setIsLoading(false);
+
+        Swal.fire({
+            title: "Archivo cargado exitosamente",
+            text: "El archivo se ha cargado con éxito.",
+            icon: "success",
+            confirmButtonText: "Continuar",
+            customClass: {
+                container: "popup-container",
+            },
+        });
     };
 
     const handleChange = (e) => {
@@ -130,6 +141,15 @@ const ProductsForm = ({
                     </Button>
                 )}
             </form>
+            <style>
+                {`
+          
+          .popup-container {
+            z-index: 9999; 
+            
+          }
+        `}
+            </style>
         </div>
     );
 };

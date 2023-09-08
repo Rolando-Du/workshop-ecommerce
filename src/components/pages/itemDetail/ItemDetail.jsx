@@ -4,15 +4,16 @@ import { db } from "../../../firebaseConfig";
 import { getDoc, collection, doc } from "firebase/firestore";
 import { Button } from "@mui/material";
 import { CartContext } from "../../../context/CartContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import './ItemDetail.css';
 
-import './ItemDetail.css'
 const ItemDetail = () => {
     const { id } = useParams();
     const { addToCart, getQuantityById } = useContext(CartContext);
     let quantity = getQuantityById(id);
     const [product, setProduct] = useState(null);
     const [counter, setCounter] = useState(quantity || 1);
-
 
     useEffect(() => {
         let refCollection = collection(db, "products");
@@ -27,21 +28,20 @@ const ItemDetail = () => {
         if (counter < product.stock) {
             setCounter(counter + 1);
         } else {
-            alert("stock maximo");
+            toast.error("¡Stock máximo! No es posible agregar más artículos."); 
         }
     };
 
     // RESTAR
-
     const subOne = () => {
         if (counter > 1) {
             setCounter(counter - 1);
         } else {
-            alert("no podes agregar menos de 1 elemento al carrito");
+            toast.warning("No puedes disminuir la cantidad por debajo de 1 elemento en el carrito.");
         }
     };
-    // AGREGAR AL CARRITO
 
+    // AGREGAR AL CARRITO
     const onAdd = () => {
         let obj = {
             ...product,
@@ -51,7 +51,6 @@ const ItemDetail = () => {
     };
 
     return (
-
         <div className="centered-container">
             <div className="container-cart">
                 <h2 className='text-center'>Detalles de los productos</h2>
@@ -63,12 +62,8 @@ const ItemDetail = () => {
                             <h3 className='product-description'>{product.description}</h3>
                         </div>
                     )}
-                    {
-                        quantity && <h6>Ya tienes {quantity} en el carrito</h6>
-                    }
-                    {
-                        product?.stock === quantity && <h6>Ya tienes el maximo en el carrito</h6>
-                    }
+                    {quantity && <h6>Ya tienes {quantity} en el carrito</h6>}
+                    {product?.stock === quantity && <h6>Ya tienes el máximo en el carrito</h6>}
                     <div className='botons'>
                         <Button variant="contained" onClick={subOne}>
                             -
@@ -79,7 +74,6 @@ const ItemDetail = () => {
                         <Button variant="contained" onClick={addOne}>
                             +
                         </Button>
-
                     </div>
                     <Button onClick={onAdd}><span className="addCar">Agregar al carrito</span> </Button>
                 </div>
