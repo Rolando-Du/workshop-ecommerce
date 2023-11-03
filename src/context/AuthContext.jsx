@@ -10,7 +10,6 @@ const AuthContextComponent = ({ children }) => {
         JSON.parse(localStorage.getItem("isLogged")) || false
     );
 
-    
     const handleLogin = (userLogged) => {
         setUser(userLogged);
         setIsLogged(true);
